@@ -1,7 +1,7 @@
 {
-  "name": "pluchegpt",
+  "name": "gpt-bot-twitch",
   "version": "1.0.0",
-  "description": "",
+  "description": "Twitch Chatbot using TMI.js and OpenAI GPT",
   "main": "index.js",
   "scripts": {
     "lint": "eslint \"src/**\" --config .eslintrc.json",

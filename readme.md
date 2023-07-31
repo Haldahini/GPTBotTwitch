@@ -32,7 +32,7 @@ Enter the pre-prompt text for your robot. Its personality or whatever you want, 
 ---
 ## Usage
 
-Build and run the `index.ts`
+Build and run the `index.js`
 ```
 npm run build
 npm run start
