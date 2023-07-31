@@ -1,7 +1,7 @@
 # Twitch Chatbot using TMI.js and  OpenAI GPT
 
 This is a Twitch chatbot that uses TMI.js for Twitch chat interaction and GPT OpenAI for generating responses based on user prompts.
-Installation
+
 ---
 ## Installation
 Clone the repository:
