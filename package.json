@@ -6,9 +6,9 @@
   "scripts": {
     "lint": "eslint \"src/**\" --config .eslintrc.json",
     "lint-fix": "eslint \"src/**\" --config .eslintrc.json --fix",
-    "start": "node dist/index.js",
+    "start": "TS_NODE_BASEURL=./dist node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p . && tsc-alias -p tsconfig.json"
   },
   "author": "",
   "license": "ISC",
