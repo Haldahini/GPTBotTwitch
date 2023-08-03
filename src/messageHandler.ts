@@ -1,7 +1,6 @@
 import tmiClient from '@/tmiClient'
 import { openAIService } from '@/openAI'
 import type { ChatUserstate } from 'tmi.js'
-import { configs } from '@/helpers/config'
 import { type ChatCompletionRequestMessage } from 'openai'
 
 const usersMessages = new Map<string, ChatCompletionRequestMessage[]>()
@@ -10,7 +9,7 @@ export default (target: string, context: ChatUserstate, msg: string, self: boole
     if (self) { return }
 
     const cleanMessage = msg.toLowerCase().replace(/([a-z]+) \1/g, (match, group) => group)
-    const asBotMention = cleanMessage.includes(`@${configs.username}`)
+    const asBotMention = cleanMessage.includes(`@${process.env.USERNAME}`)
     const username = context.username ?? ''
 
     if (!asBotMention || username === '') { return }
@@ -26,8 +25,8 @@ export default (target: string, context: ChatUserstate, msg: string, self: boole
             messages: [
                 {
                     role: 'system',
-                    name: configs.username,
-                    content: `${configs.prePrompt}`
+                    name: process.env.USERNAME,
+                    content: `${process.env.BOT_PREPROMPTS}`
                 }, ...lastMessages]
         })
 

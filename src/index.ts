@@ -2,11 +2,13 @@ import 'dotenv/config'
 import tmiClient from '@/tmiClient'
 import messageHandler from '@/messageHandler'
 
-tmiClient
-    .connect()
-    .then(() => {
+async function main() {
+    try {
+        await tmiClient.connect()
         tmiClient.on('message', messageHandler)
-    })
-    .catch((e) => {
-        console.log(e)
-    })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+main()
