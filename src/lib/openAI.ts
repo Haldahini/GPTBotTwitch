@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from 'openai'
+import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai'
 
 if (!process.env.OPENAI_SECRET_KEY || !process.env.OPENAI_ORG)
     import('dotenv/config')
@@ -8,4 +8,9 @@ const configuration = new Configuration({
     organization: process.env.OPENAI_ORG
 })
 
-export const openAIApi = new OpenAIApi(configuration)
+const openAIApi = new OpenAIApi(configuration)
+
+export {
+    openAIApi,
+    ChatCompletionRequestMessage
+}

@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import tmiClient from '@/tmiClient'
+import tmiClient from '@/lib/tmiClient'
 import messageHandler from '@/messageHandler'
 
 async function main() {

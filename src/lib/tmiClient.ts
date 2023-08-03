@@ -13,3 +13,5 @@ export default new tmi.Client({
         'haldahini' // or your channel obviously
     ]
 })
+
+export type ChatUserstate = tmi.ChatUserstate
