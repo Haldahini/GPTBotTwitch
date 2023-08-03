@@ -1,11 +1,13 @@
 import * as tmi from 'tmi.js'
-import { configs } from '@/helpers/config'
+
+if (!process.env.USERNAME || !process.env.OAUTH_TOKEN)
+    import('dotenv/config')
 
 export default new tmi.Client({
     options: { debug: true },
     identity: {
-        username: configs.username,
-        password: configs.oauthToken
+        username: process.env.USERNAME,
+        password: process.env.OAUTH_TOKEN
     },
     channels: [
         'haldahini' // or your channel obviously
