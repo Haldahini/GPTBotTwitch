@@ -2,7 +2,7 @@ import 'dotenv/config'
 import tmiClient from '@/lib/tmiClient'
 import messageHandler from '@/messageHandler'
 
-async function main() {
+async function main () {
     try {
         await tmiClient.connect()
         tmiClient.on('message', messageHandler)
