@@ -2,9 +2,9 @@ import tmiClient from '@/tmiClient'
 import { openAIApi } from '@/openAI'
 import type { ChatUserstate } from 'tmi.js'
 import { configs } from '@/helpers/config'
-import { ChatCompletionRequestMessage } from "openai";
+import { type ChatCompletionRequestMessage } from 'openai'
 
-const usersMessages = new Map<string, Array<ChatCompletionRequestMessage>>
+const usersMessages = new Map<string, ChatCompletionRequestMessage[]>()
 
 export default (target: string, context: ChatUserstate, msg: string, self: boolean): void => {
     if (self) { return }
@@ -35,7 +35,7 @@ export default (target: string, context: ChatUserstate, msg: string, self: boole
 
         if (botText !== undefined) {
             await tmiClient.say(target, botText)
-            lastMessages.push({role: 'system', content: botText})
+            lastMessages.push({ role: 'system', content: botText })
             usersMessages.set(username, lastMessages)
         }
     })().catch((e) => {
