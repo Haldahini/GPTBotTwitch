@@ -1,7 +1,5 @@
-import tmiClient from '@/tmiClient'
-import { openAIService } from '@/openAI'
-import type { ChatUserstate } from 'tmi.js'
-import { type ChatCompletionRequestMessage } from 'openai'
+import tmiClient, { ChatUserstate } from '@/lib/tmiClient'
+import { openAIApi, ChatCompletionRequestMessage } from '@/lib/openAI'
 
 const usersMessages = new Map<string, ChatCompletionRequestMessage[]>()
 
@@ -19,7 +17,7 @@ export default (target: string, context: ChatUserstate, msg: string, self: boole
     if (lastMessages.length > 6) { lastMessages.splice(0, 2) }
 
     (async () => {
-        const chatCompletion = await openAIService.createChatCompletion({
+        const chatCompletion = await openAIApi.createChatCompletion({
             model: 'gpt-3.5-turbo',
             max_tokens: 75,
             messages: [
