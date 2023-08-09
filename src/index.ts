@@ -1,4 +1,5 @@
-import tmiClient from '@/tmiClient'
+import 'dotenv/config'
+import tmiClient from '@/lib/tmiClient'
 import messageHandler from '@/messageHandler'
 
 tmiClient
