@@ -1,5 +1,5 @@
 import * as tmi from 'tmi.js'
-import * as process from "process";
+import * as process from 'process'
 
 export default new tmi.Client({
     options: { debug: process.env.DEBUG === 'true' },
