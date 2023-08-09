@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 export const configs = {
     username: process.env.USERNAME ?? '',
     oauthToken: process.env.OAUTH_TOKEN ?? '',
