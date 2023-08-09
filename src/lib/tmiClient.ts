@@ -1,9 +1,8 @@
 import * as tmi from 'tmi.js'
-
-if (!process.env.USERNAME || !process.env.OAUTH_TOKEN) { import('dotenv/config') }
+import * as process from "process";
 
 export default new tmi.Client({
-    options: { debug: true },
+    options: { debug: process.env.DEBUG === 'true' },
     identity: {
         username: process.env.USERNAME,
         password: process.env.OAUTH_TOKEN
