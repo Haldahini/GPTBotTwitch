@@ -5,5 +5,6 @@ declare namespace NodeJS {
 		OPENAI_SECRET_KEY: string
 		OPENAI_ORG: string
 		BOT_PREPROMPTS: string
+		DEBUG: string
 	}
 }

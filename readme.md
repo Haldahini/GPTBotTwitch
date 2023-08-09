@@ -22,6 +22,7 @@ yarn install
 Create a `.env` file based on the `.env.example` :
 
 - `USERNAME` : Make sure to replace 'USERNAME' with your actual bot's Twitch username.
+- `DEBUG` : Set to `true` for tmi.js debug
 - `OAUTH_TOKEN` : Your [Twitch OAuth Token](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#authorization-code-grant-flow).
 - `OPENAI_ORG` : Your OpenAI Organization ID
 - `OPENAI_SECRET_KEY` :
