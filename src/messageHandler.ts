@@ -1,5 +1,5 @@
-import tmiClient, {type ChatUserstate} from '@/lib/tmiClient'
-import {type ChatMessage, converseWithOpenAI, getResumeOfLastNormalMessages} from '@/lib/openAIService'
+import tmiClient, { type ChatUserstate } from './lib/tmiClient'
+import { type ChatMessage, converseWithOpenAI, getResumeOfLastNormalMessages } from './lib/openAIService'
 
 const usersMessages = new Map<string, ChatMessage>()
 
@@ -13,7 +13,6 @@ export default (target: string, context: ChatUserstate, msg: string, self: boole
     if (!asBotMention || username === '') { return }
 
     (async () => {
-
         const lastMessages = usersMessages.get(username) ?? { resume: '', messages: [] }
 
         // keep only 3 last messages (3 of user messages and 3 bot answers) or get the resume

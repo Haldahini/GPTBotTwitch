@@ -1,6 +1,6 @@
 import 'dotenv/config'
-import tmiClient from '@/lib/tmiClient'
-import messageHandler from '@/messageHandler'
+import tmiClient from './lib/tmiClient'
+import messageHandler from './messageHandler'
 
 tmiClient
     .connect()

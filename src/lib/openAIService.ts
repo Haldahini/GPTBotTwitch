@@ -1,7 +1,7 @@
 import { type ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai'
-import * as process from "process";
+import * as process from 'process'
 
-type ChatMessage = {
+interface ChatMessage {
     resume: string
     messages: ChatCompletionRequestMessage[]
 }
@@ -13,21 +13,21 @@ const configuration = new Configuration({
 
 const openAIService = new OpenAIApi(configuration)
 
-const getResumeOfLastNormalMessages = async (username: string, chatMessages: ChatMessage) => {
-    const prePromp: string = `#init \n - Tu dois résumer la conversation que te donne l'utilisateur en un maximum de 500 caracteres.\n - L'utilisateur peux aussi mettre un resumer precedent et tu dois l'integrer au resumer.\n - Tu dois garder les informations importantes qui peuvent permettre d'identifier l'utilisateur.\n #rules\n - Tu ne dois écrire que le résumé de la conversation que te passe l'utilisateur.\n`
+const getResumeOfLastNormalMessages = async (username: string, chatMessages: ChatMessage): Promise<string | undefined> => {
+    const prePromp: string = '#init \n - Tu dois résumer la conversation que te donne l\'utilisateur en un maximum de 500 caracteres.\n - L\'utilisateur peux aussi mettre un resumer precedent et tu dois l\'integrer au resumer.\n - Tu dois garder les informations importantes qui peuvent permettre d\'identifier l\'utilisateur.\n #rules\n - Tu ne dois écrire que le résumé de la conversation que te passe l\'utilisateur.\n'
 
     const resume = await openAIService.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [
             {
-                role: "system",
+                role: 'system',
                 content: prePromp
             },
             {
-                role: "user",
+                role: 'user',
                 content: `${chatMessages.resume.length > 0
-                    ? `# Resumé precedemt : ${chatMessages.resume}, `
-                    : ``
+                    ? `# Resumé precedent : ${chatMessages.resume}, `
+                    : ''
                 }
                 # Conversation :
                 ${conversationToString(username, chatMessages.messages)}`
@@ -38,11 +38,11 @@ const getResumeOfLastNormalMessages = async (username: string, chatMessages: Cha
     return resume.data?.choices?.[0]?.message?.content
 }
 
-const conversationToString = (username: string, messages: ChatCompletionRequestMessage[]) =>
+const conversationToString = (username: string, messages: ChatCompletionRequestMessage[]): string =>
     messages.reduce((prevMessage, message) =>
-            prevMessage + `- ${(message.role === 'system' ? process.env.USERNAME : username)}: ${message.content} \\n `, '')
+        `${prevMessage} - ${(message.role === 'system' ? process.env.USERNAME : username)}: ${message.content ?? ''} \\n `, '')
 
-const converseWithOpenAI = async (username: string, chatMessage: ChatMessage) => {
+const converseWithOpenAI = async (username: string, chatMessage: ChatMessage): Promise<string | undefined> => {
     const chatCompletion = await openAIService.createChatCompletion({
         model: 'gpt-3.5-turbo',
         max_tokens: 75,
@@ -50,7 +50,7 @@ const converseWithOpenAI = async (username: string, chatMessage: ChatMessage) =>
             {
                 role: 'system',
                 name: process.env.USERNAME,
-                content: `${process.env.BOT_PREPROMPTS}, - Tu parle avec ${username}.\\n ${getResumeMessage(chatMessage)}`
+                content: `${process.env.BOT_PREPROMPTS}, - Tu parles avec ${username}.\\n ${getResumeMessage(chatMessage)}`
             }, ...chatMessage.messages
         ]
     })
@@ -58,7 +58,7 @@ const converseWithOpenAI = async (username: string, chatMessage: ChatMessage) =>
     return chatCompletion.data?.choices?.[0]?.message?.content
 }
 
-const getResumeMessage = (messages: ChatMessage) => (messages.resume.length > 0)
+const getResumeMessage = (messages: ChatMessage): string => (messages.resume.length > 0)
     ? `- Voici le resumer de ta conversation precedente : ${messages.resume}`
     : ''
 
