@@ -1,5 +1,5 @@
 import tmiClient, { type ChatUserstate } from '@/lib/tmiClient'
-import { openAIService, type ChatCompletionRequestMessage } from '@/lib/openAI'
+import { openAIService, type ChatCompletionRequestMessage } from '@/lib/openAIService'
 
 const usersMessages = new Map<string, ChatCompletionRequestMessage[]>()
 
