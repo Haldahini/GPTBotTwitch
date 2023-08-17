@@ -33,7 +33,7 @@ const getResumeOfLastNormalMessages = async (username: string, chatMessages: Cha
                 content: `${chatMessages.resume.length > 0
                     ? `# Resumer precedemt : ${chatMessages.resume}, `
                     : ``
-                } 
+                }
                 # Conversation :
                 ${conversationToString(username, chatMessages.messages)}`
             }
@@ -58,8 +58,6 @@ const converseWithOpenAI = async (username: string, chatMessage: ChatMessage) =>
             }, ...chatMessage.messages
         ]
     })
-
-    console.log(`${process.env.BOT_PREPROMPTS}, - Tu parle avec ${username}.\\n ${getResumeMessage(chatMessage)}`)
 
     return chatCompletion.data?.choices?.[0]?.message?.content
 }
