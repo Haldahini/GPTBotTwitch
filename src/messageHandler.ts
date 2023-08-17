@@ -16,7 +16,7 @@ export default (target: string, context: ChatUserstate, msg: string, self: boole
 
         const lastMessages = usersMessages.get(username) ?? { resume: '', messages: [] }
 
-        // keep only 4 last messages (2 of user messages and 2 bot answers) or get the resume
+        // keep only 3 last messages (3 of user messages and 3 bot answers) or get the resume
         if (lastMessages.messages.length > 6) {
             const resume = await getResumeOfLastNormalMessages(username, lastMessages)
             if (resume !== undefined) {

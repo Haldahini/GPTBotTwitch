@@ -14,24 +14,19 @@ const configuration = new Configuration({
 const openAIService = new OpenAIApi(configuration)
 
 const getResumeOfLastNormalMessages = async (username: string, chatMessages: ChatMessage) => {
+    const prePromp: string = `#init \n - Tu dois résumer la conversation que te donne l'utilisateur en un maximum de 500 caracteres.\n - L'utilisateur peux aussi mettre un resumer precedent et tu dois l'integrer au resumer.\n - Tu dois garder les informations importantes qui peuvent permettre d'identifier l'utilisateur.\n #rules\n - Tu ne dois écrire que le résumé de la conversation que te passe l'utilisateur.\n`
+
     const resume = await openAIService.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [
             {
                 role: "system",
-                content: `
-                #init 
-                - Tu dois résumer la conversation que te donne l'utilisateur en un maximum de 500 caracteres.
-                - L'utilisateur peux aussi mettre un resumer precedent et tu dois l'integrer au resumer.
-                - Tu dois garder les informations importantes qui peuvent permettre d'identifier l'utilisateur.
-                #rules
-                - Tu ne dois ecrire que le résumer de la conversation que te passe l'utilisateur.
-                `
+                content: prePromp
             },
             {
                 role: "user",
                 content: `${chatMessages.resume.length > 0
-                    ? `# Resumer precedemt : ${chatMessages.resume}, `
+                    ? `# Resumé precedemt : ${chatMessages.resume}, `
                     : ``
                 }
                 # Conversation :
@@ -39,6 +34,7 @@ const getResumeOfLastNormalMessages = async (username: string, chatMessages: Cha
             }
         ]
     })
+
     return resume.data?.choices?.[0]?.message?.content
 }
 
