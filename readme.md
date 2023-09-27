@@ -29,6 +29,8 @@ Create a `.env` file based on the `.env.example` :
 You need to have access to the GPT OpenAI API. Obtain an API key from OpenAI
 - `BOT_PREPROMPTS` :
 Enter the pre-prompt text for your robot. Its personality or whatever you want, what you expect from it.
+- `BOT_RESUME_PREPROMPTS` :
+Enter the pre-prompt for resuming the last conversations. That give more context for the bot.
 
 ---
 ## Usage
