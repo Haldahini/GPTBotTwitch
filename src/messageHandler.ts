@@ -1,7 +1,7 @@
-import tmiClient, { type ChatUserstate } from '@/lib/tmiClient'
-import { openAIService, type ChatCompletionRequestMessage } from '@/lib/openAIService'
+import tmiClient, { type ChatUserstate } from './lib/tmiClient'
+import { type ChatMessage, converseWithOpenAI, getResumeOfLastNormalMessages } from './lib/openAIService'
 
-const usersMessages = new Map<string, ChatCompletionRequestMessage[]>()
+const usersMessages = new Map<string, ChatMessage>()
 
 export default (target: string, context: ChatUserstate, msg: string, self: boolean): void => {
     if (self) { return }
@@ -11,28 +11,26 @@ export default (target: string, context: ChatUserstate, msg: string, self: boole
     const username = context.username ?? ''
 
     if (!asBotMention || username === '') { return }
-    const lastMessages = usersMessages.get(username) ?? []
-    lastMessages.push({ role: 'user', content: cleanMessage })
-
-    if (lastMessages.length > 6) { lastMessages.splice(0, 2) }
 
     (async () => {
-        const chatCompletion = await openAIService.createChatCompletion({
-            model: 'gpt-3.5-turbo',
-            max_tokens: 75,
-            messages: [
-                {
-                    role: 'system',
-                    name: process.env.USERNAME,
-                    content: `${process.env.BOT_PREPROMPTS}`
-                }, ...lastMessages]
-        })
+        const lastMessages = usersMessages.get(username) ?? { resume: '', messages: [] }
 
-        const botText = chatCompletion.data?.choices?.[0]?.message?.content
+        // keep only 3 last messages (3 of user messages and 3 bot answers) or get the resume
+        if (lastMessages.messages.length > 6) {
+            const resume = await getResumeOfLastNormalMessages(username, lastMessages)
+            if (resume !== undefined) {
+                lastMessages.resume = resume
+                lastMessages.messages.splice(0, 6)
+            }
+        }
+
+        lastMessages.messages.push({ role: 'user', content: cleanMessage })
+
+        const botText = await converseWithOpenAI(username, lastMessages)
 
         if (botText !== undefined) {
             await tmiClient.say(target, botText)
-            lastMessages.push({ role: 'system', content: botText })
+            lastMessages.messages.push({ role: 'system', content: botText })
             usersMessages.set(username, lastMessages)
         }
     })().catch((e) => {
