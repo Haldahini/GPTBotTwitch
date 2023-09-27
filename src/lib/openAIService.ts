@@ -14,14 +14,14 @@ const configuration = new Configuration({
 const openAIService = new OpenAIApi(configuration)
 
 const getResumeOfLastNormalMessages = async (username: string, chatMessages: ChatMessage): Promise<string | undefined> => {
-    const prePromp: string = '#init \n - Tu dois résumer la conversation que te donne l\'utilisateur en un maximum de 500 caracteres.\n - L\'utilisateur peux aussi mettre un resumer precedent et tu dois l\'integrer au resumer.\n - Tu dois garder les informations importantes qui peuvent permettre d\'identifier l\'utilisateur.\n #rules\n - Tu ne dois écrire que le résumé de la conversation que te passe l\'utilisateur.\n'
+    const prePrompt: string = process.env.BOT_RESUME_PREPROMPTS
 
     const resume = await openAIService.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [
             {
                 role: 'system',
-                content: prePromp
+                content: prePrompt
             },
             {
                 role: 'user',
