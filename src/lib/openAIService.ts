@@ -14,7 +14,7 @@ const configuration = new Configuration({
 const openAIService = new OpenAIApi(configuration)
 
 const getResumeOfLastNormalMessages = async (username: string, chatMessages: ChatMessage): Promise<string | undefined> => {
-    const prePrompt: string = process.env.BOT_RESUME_PREPROMPTS
+    const prePrompt: string = process.env.BOT_RESUME_PREPROMPTS ?? ''
 
     const resume = await openAIService.createChatCompletion({
         model: 'gpt-3.5-turbo',
